@@ -1,3 +1,5 @@
+![cat](./assets/cat-3.jpg)
+
 # About @karszawa
 
 ## Name
