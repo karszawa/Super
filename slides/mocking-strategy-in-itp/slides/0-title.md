@@ -1,3 +1,7 @@
 <!-- classes: title -->
 
-# Title
+# Mocking Strategy in some WebView App
+
+<br />
+
+とあるWebViewアプリケーションにおけるモック戦略
