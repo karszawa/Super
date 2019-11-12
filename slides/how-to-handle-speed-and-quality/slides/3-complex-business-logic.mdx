@@ -6,21 +6,21 @@
 
 ---
 
-# 今回のまとめ
+## 今回のまとめ
 
 - 巨大なビジネスロジックの制御方法（何を作っているか）
 - スクラムの実践方法（どうやって作っているか）
 
 ---
 
-## ITP has **extremely** complex business requirements
+## ITP has **extremely** complex business requirements :shrug:
 
-ITP is one page but behaves depends on,
+ITPは次の条件で振る舞いを変える
 
-- Seller or Buyer
-- A lot of states (WaitShipping / WaitReview / Done, ...)
-- A lot of shipping methods (らくらくメルカリ便, ゆうゆうメルカリ便, 大型らくらくメルカリ便, ...)
-- A lot of types of items (あんしんスマホサポート, あんしん自動車保証, ...)
+- **購入者** か **出品者**
+- **取引状態** (WaitShipping / WaitReview / Done, ...)
+- **発送方法** (らくらくメルカリ便, ゆうゆうメルカリ便, 大型らくらくメルカリ便, ...)
+- **商品カテゴリ** (あんしんスマホサポート, あんしん自動車保証, ...)
 
 ---
 
@@ -29,8 +29,8 @@ Example of transactions...
 
 ---
 
-- ビジネスロジックは画面ごとに異なる
-- が、共有できるコンポーネントが多くある
+- **ビジネスロジックは画面ごとに異なる**
+- **共有できるコンポーネントが多くある**
 
 ---
 
