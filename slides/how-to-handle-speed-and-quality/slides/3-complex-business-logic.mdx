@@ -6,7 +6,7 @@
 
 ---
 
-## 今回のまとめ
+## 今日のまとめ
 
 - 巨大なビジネスロジックの制御方法（何を作っているか）
 - スクラムの実践方法（どうやって作っているか）
@@ -34,15 +34,29 @@ Example of transactions...
 
 ---
 
-- common
-  - components
-- transactions
-  - rakuraku
-    - components
-  - oogata
-    - components
-  - yuyu
-    - components
+```
+src
+├── common
+│   └── components
+│       ├── Button.tsx
+│       ├── Panel.tsx
+│       └── Row.tsx
+└── transactions
+    ├── car
+    │   └── components
+    ├── oogata
+    │   └── components
+    └── rakuraku
+        ├── Buyer.tsx
+        ├── Seller.tsx
+        ├── components
+        │   ├── ProductDetail.tsx
+        │   └── TransactionInfo.tsx
+        └── containers
+            ├── Done.tsx
+            ├── WaitReview.tsx
+            └── WaitShipping.tsx
+```
 
 ---
 

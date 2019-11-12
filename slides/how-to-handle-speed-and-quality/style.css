@@ -40,7 +40,7 @@ a {
   text-align: left;
 }
 
-ul {
+ul, ol {
   margin-left: 5rem;
 }
 
@@ -64,17 +64,17 @@ li {
 }
 
 /* 入れ子のインデントを増やす */
-ul {
+ul, ol {
   margin-top: 2rem;
 }
 
-li > ul {
+li > ul, ol {
   margin-left: 5rem;
   margin-top: 0rem;
 }
 
 /* トップレベルのリストはマージンを増やす */
-section > ul > li {
+section > ul, ol > li {
   margin-top: 0rem;
   margin-bottom: 2rem;
 }
