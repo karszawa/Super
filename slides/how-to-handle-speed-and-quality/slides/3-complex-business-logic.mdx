@@ -2,7 +2,14 @@
 
 ---
 
-# How to develop ITP while balancing the speed of development with the quolity of the feature
+# 開発速度と品質を両立しながら開発を行うためにITPチームが何を行っているか
+
+---
+
+# 今回のまとめ
+
+- 巨大なビジネスロジックの制御方法（何を作っているか）
+- スクラムの実践方法（どうやって作っているか）
 
 ---
 
@@ -18,13 +25,24 @@ ITP is one page but behaves depends on,
 ---
 
 Example of transactions...
-<!-- TODO: Add screenshots -->
+<!-- TODO: 取引画面のスクリーンショット（再掲？） -->
 
 ---
 
-The business requirement is different for each page.
+- ビジネスロジックは画面ごとに異なる
+- が、共有できるコンポーネントが多くある
 
-However, all transaction pages have some sharable components.
+---
+
+- common
+  - components
+- transactions
+  - rakuraku
+    - components
+  - oogata
+    - components
+  - yuyu
+    - components
 
 ---
 
@@ -127,3 +145,10 @@ Reduxはデータストアとして徹底する
 - 振る舞いを選択する層がもない
   - 末端のコンポーネントが自分が参照すべき情報を自分で考えてグローバルオブジェクトから情報を引き抜く
   - 「」という文字列を参照するかどうかを考えるときに配送方法に応じて違うロジックをspanのvisible属性（Knockout.js)
+
+<!-- ## マイクロサービス
+
+- サーバーサイドではドメインの分割により責任範囲を小さくまとめる「マイクロサービス化」の潮流がある
+- フロントにも「マイクロフロントエンド」という概念がある
+  - モチベーションはバックエンドと同じ
+  - フロントエンドはリソースを一つにまとめたいという強い要求があるため（今の所）実践は難しい -->
