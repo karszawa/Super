@@ -1,0 +1,129 @@
+# Today's topic
+
+---
+
+# How to develop ITP while balancing the speed of development with the quolity of the feature
+
+---
+
+## ITP has **extremely** complex business requirements
+
+ITP is one page but behaves depends on,
+
+- Seller or Buyer
+- A lot of states (WaitShipping / WaitReview / Done, ...)
+- A lot of shipping methods (らくらくメルカリ便, ゆうゆうメルカリ便, 大型らくらくメルカリ便, ...)
+- A lot of types of items (あんしんスマホサポート, あんしん自動車保証, ...)
+
+---
+
+Example of transactions...
+<!-- TODO: Add screenshots -->
+
+---
+
+The business requirement is different for each page.
+
+However, all transaction pages have some sharable components.
+
+---
+
+Q. How can we separate UI from business logics.
+
+A. "Clean Architecture" in the Frontend world
+
+  1. Presentation layer by components with styling.
+  2. Presentation layer by components with domain logic.
+  3. Connection layer (Redux's `connect` function)
+  4. Business logic layer Redux-Saga.
+  5. Data layer (Redux)
+
+---
+
+## Presentation layer by components with styling
+
+「どう見えるか」を定義する層
+
+Example:
+
+```
+
+```
+
+責務が分離されているから
+
+- コンポーネントの分離ルールが明確
+- デザインシステムを適用しやすい（移行したとは言っていない）
+
+---
+
+## Presentation layer by components with domain logic
+
+「何が見えるか」を定義する層
+
+要素の出し分けをビジネスロジックを元に行う
+
+```
+```
+
+---
+
+## Connection layer
+
+「振る舞い」を選ぶ層
+
+`connect` でReducerやActionを渡して振る舞いを変更するだけ。
+振る舞いの定義自体は次の層で行う。
+
+```
+```
+
+---
+
+## Business logic layer by Redux-Saga
+
+「振る舞い」を定義する層
+
+例: 「シンプル」なビジネスロジックの例
+
+1. APIから取引情報を取ってきて保存する
+2. データの取得中にはネイティブのローディングアイコンを表示する
+3. 取得時にエラーが発生した場合は適切なエラーメッセージを表示する
+
+---
+
+## Business logic layer by Redux & Redux-Saga
+
+```
+```
+
+---
+
+## Data layer
+
+Reduxはデータストアとして徹底する
+
+例:
+
+```
+```
+
+---
+
+## Data layer
+
+コツ:
+
+- Reducerに複雑なロジックを書かない
+- データごとにReducerを分離する
+
+→ シンプルなReducerが無数に存在する状態が理想
+
+---
+
+## OTP (Old Transaction Page)
+
+- 「どう見えるか」と「何が見えるか」が層分けされていない
+- 振る舞いを選択する層がもない
+  - 末端のコンポーネントが自分が参照すべき情報を自分で考えてグローバルオブジェクトから情報を引き抜く
+  - 「」という文字列を参照するかどうかを考えるときに配送方法に応じて違うロジックをspanのvisible属性（Knockout.js)
