@@ -13,9 +13,9 @@
 
 ---
 
-## ITP has **extremely** complex business requirements :shrug:
+## ITPは単一のアプリケーションだが巨大で複雑なビジネスロジックを持っている
 
-ITPは次の条件で振る舞いを変える
+ITP（取引画面）は次の条件で振る舞いを変える
 
 - **購入者** か **出品者**
 - **取引状態** (WaitShipping / WaitReview / Done, ...)
@@ -24,78 +24,95 @@ ITPは次の条件で振る舞いを変える
 
 ---
 
-Example of transactions...
-<!-- TODO: 取引画面のスクリーンショット（再掲？） -->
+## ITP（取引画面）の例
+
+![transaction-pages](https://github.com/karszawa/bio/blob/how-to-handle-speed-and-stability/slides/how-to-handle-speed-and-quality/slides/img/transaction-pages.png?raw=true)
+
+<!-- 取引画面の遷移図も書きたい -->
 
 ---
 
-- **ビジネスロジックは画面ごとに異なる**
-- **共有できるコンポーネントが多くある**
+## ポイント :bulb:
+
+- ビジネスロジックは画面ごとに異なる
+- 共有できるコンポーネントが多くある
+- ☞ ビジネスロジックとUIコンポーネントがきれいに分割できるかどうかが重要
+
+<span className="vs-16"></span>
+
+## きれいに分割できると
+
+<span className="vs-16"></span>
+
+- **再利用がしやすい** （開発速度の向上）
+- **テストしやすく変更にも強くなる** （品質の向上）
 
 ---
 
-```
-src
-├── common
-│   └── components
-│       ├── Button.tsx
-│       ├── Panel.tsx
-│       └── Row.tsx
-└── transactions
-    ├── car
-    │   └── components
-    ├── oogata
-    │   └── components
-    └── rakuraku
-        ├── Buyer.tsx
-        ├── Seller.tsx
-        ├── components
-        │   ├── ProductDetail.tsx
-        │   └── TransactionInfo.tsx
-        └── containers
-            ├── Done.tsx
-            ├── WaitReview.tsx
-            └── WaitShipping.tsx
-```
+## 具体的にはどうやって分ける？
+
+![layers]()
 
 ---
 
-Q. How can we separate UI from business logics.
-
-A. "Clean Architecture" in the Frontend world
-
-  1. Presentation layer by components with styling.
-  2. Presentation layer by components with domain logic.
-  3. Connection layer (Redux's `connect` function)
-  4. Business logic layer Redux-Saga.
-  5. Data layer (Redux)
-
----
-
-## Presentation layer by components with styling
+## View Layer (React)
 
 「どう見えるか」を定義する層
 
-Example:
+- マークアップやスタイリングを担当
 
+```js:
+const CommentBoxTypeOne = ({
+  messages,
+  handleMessageChange,
+  handleSubmit,
+  shouldDisableSendButton,
+}) => (
+  <div class="block">
+    <textarea
+      value={message}
+      onChange={handleMessageChange}
+    />
+    {!shouldDisableSendButton && <PrimaryButton onClick={handleSubmit} />}
+  </div>
+);
 ```
 
-```
-
-責務が分離されているから
-
-- コンポーネントの分離ルールが明確
-- デザインシステムを適用しやすい（移行したとは言っていない）
+責務が明確なのでデザインシステムに移行しやすい（移行したとは言っていない）
 
 ---
 
-## Presentation layer by components with domain logic
+## Display Logic Layer (React-Redux)
 
 「何が見えるか」を定義する層
 
-要素の出し分けをビジネスロジックを元に行う
+- 要素の出し分けを行う
 
-```
+```js:
+const CommentBox = ({
+  shouldDisableSentButton,
+  messages,
+}) => {
+  if (someBranchingLogic) {
+    return <CommentBoxTypeOne />;
+  }
+  return <CommentBoxTypeTwo />;
+}
+
+const mapStateToProps = ({ transaction }: Store) => ({
+  // ...some display logic
+  shouldDisableSentButton,
+  messages: someCalculation(transaction.messages),
+});;
+
+const mapDispatchToProps = () => ({
+  handleMessageChange: updateMessage
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(CommentBox);
 ```
 
 ---
@@ -153,16 +170,29 @@ Reduxはデータストアとして徹底する
 
 ---
 
-## OTP (Old Transaction Page)
+## ディレクトリベースでレイヤを分割して分割の間違いが起こりにくいようにしている
 
-- 「どう見えるか」と「何が見えるか」が層分けされていない
-- 振る舞いを選択する層がもない
-  - 末端のコンポーネントが自分が参照すべき情報を自分で考えてグローバルオブジェクトから情報を引き抜く
-  - 「」という文字列を参照するかどうかを考えるときに配送方法に応じて違うロジックをspanのvisible属性（Knockout.js)
-
-<!-- ## マイクロサービス
-
-- サーバーサイドではドメインの分割により責任範囲を小さくまとめる「マイクロサービス化」の潮流がある
-- フロントにも「マイクロフロントエンド」という概念がある
-  - モチベーションはバックエンドと同じ
-  - フロントエンドはリソースを一つにまとめたいという強い要求があるため（今の所）実践は難しい -->
+```
+src
+├── common
+│   └── components
+│       ├── Button.tsx
+│       ├── Panel.tsx
+│       └── Row.tsx
+└── transactions
+    ├── car
+    ├── oogata
+    └── rakuraku
+        ├── Buyer.tsx
+        ├── Seller.tsx
+        ├── components
+        │   ├── ProductDetail.tsx
+        │   └── TransactionInfo.tsx
+        ├── containers
+        │   ├── Done.tsx
+        │   ├── WaitReview.tsx
+        │   └── WaitShipping.tsx
+        └── stores
+            ├── reducers.ts
+            └── sagas.ts
+```
