@@ -1,4 +1,6 @@
-# Today's topic
+import { SideLayer } from "./components/SideLayer";
+
+# 今日のトピック
 
 ---
 
@@ -36,33 +38,43 @@ ITP（取引画面）は次の条件で振る舞いを変える
 
 - ビジネスロジックは画面ごとに異なる
 - 共有できるコンポーネントが多くある
-- ☞ ビジネスロジックとUIコンポーネントがきれいに分割できるかどうかが重要
+- ☞ ビジネスロジックとUIがきれいに分割できるかどうかが重要
 
 <span className="vs-16"></span>
 
-## きれいに分割できると
+## ビジネスロジックとUIがきれいに分割できると
 
 <span className="vs-16"></span>
 
-- **再利用がしやすい** （開発速度の向上）
-- **テストしやすく変更にも強くなる** （品質の向上）
+- 再利用がしやすい （**開発速度の向上**）
+- テストしやすく変更にも強くなる （**品質の向上**）
 
 ---
 
 ## 具体的にはどうやって分ける？
 
-![layers]()
+データ層・ロジック層・プレゼンテーション層などのレイヤーに分離
 
 ---
 
-## View Layer (React)
+<img src="./img/layers.png" />
 
-「どう見えるか」を定義する層
+---
 
-- マークアップやスタイリングを担当
+## Presentation Layer (React)
+
+<!--
+  どう見えるか
+  - formatting
+  - styling
+  - accessibility
+-->
+
+- マークアップやスタイリング
+- 責務が明確なのでデザインシステムに移行しやすい（移行したとは言っていない）
 
 ```js:
-const CommentBoxTypeOne = ({
+const CommentBoxTypeOne: React.FC<Props> = ({
   messages,
   handleMessageChange,
   handleSubmit,
@@ -78,18 +90,21 @@ const CommentBoxTypeOne = ({
 );
 ```
 
-責務が明確なのでデザインシステムに移行しやすい（移行したとは言っていない）
-
 ---
 
-## Display Logic Layer (React-Redux)
+## Presentaion Layer (React-Redux)
 
+<!--
 「何が見えるか」を定義する層
+- select data
+- select component
+- connect data to component
+-->
 
-- 要素の出し分けを行う
+- コンポーネント・データを**選択し紐付ける**
 
 ```js:
-const CommentBox = ({
+const CommentBox: React.FC<Props> = ({
   shouldDisableSentButton,
   messages,
 }) => {
@@ -109,7 +124,7 @@ const mapDispatchToProps = () => ({
   handleMessageChange: updateMessage
 });
 
-export default connect(
+export const SmartCommentBox = connect(
   mapStateToProps,
   mapDispatchToProps,
 )(CommentBox);
@@ -117,56 +132,100 @@ export default connect(
 
 ---
 
-## Connection layer
+## Business Logic Layer (Redux-Saga)
 
-「振る舞い」を選ぶ層
-
-`connect` でReducerやActionを渡して振る舞いを変更するだけ。
-振る舞いの定義自体は次の層で行う。
+- **振る舞い**を定義する層
 
 ```
-```
+例: メッセージを送信するときのビジネスロジック
 
----
-
-## Business logic layer by Redux-Saga
-
-「振る舞い」を定義する層
-
-例: 「シンプル」なビジネスロジックの例
-
-1. APIから取引情報を取ってきて保存する
-2. データの取得中にはネイティブのローディングアイコンを表示する
-3. 取得時にエラーが発生した場合は適切なエラーメッセージを表示する
-
----
-
-## Business logic layer by Redux & Redux-Saga
-
-```
+1. コメントボックスに入力されたメッセージを取り出す
+2. 本当に送信するかの確認のためにダイアログを表示する
+3. 確認ボタンが押されたらメッセージをAPIに送信する
+4. APIにエラーが発生したらエラーメッセージを表示する
+5. 送信に成功したらメッセージのリストを更新する
 ```
 
 ---
 
-## Data layer
+## Business Logic layer (Redux-Saga)
 
-Reduxはデータストアとして徹底する
+- Sagaを起動
 
-例:
-
-```
+```js
+function createRootSaga(api: APIClient) {
+  return function *rootSaga() {
+    yield fork(function*() {
+      while(true) {
+        const action = yield take(POST_CHAT_MESSAGE);
+        yield call(postMessageSaga, apiClient, action);
+      }
+    });
+  }
+}
 ```
 
 ---
 
-## Data layer
+## Business Logic layer (Redux-Saga)
 
-コツ:
+- Saga本体
 
-- Reducerに複雑なロジックを書かない
-- データごとにReducerを分離する
+```js
+export function* postMessageSaga(api: APIClient, action: ReduxAction<{ message: string }>) {
+  // 1. コメントボックスに入力されたメッセージを取り出す
+  const { message } = action.payload;
 
-→ シンプルなReducerが無数に存在する状態が理想
+  // 2. 本当に送信するかの確認のためにダイアログを表示する
+  const confirmParams: ConfirmParams = {
+    message: "本当にメッセージを送信しますか？",
+    confirmText: "はい",
+    dismissText: "いいえ"
+  };
+  if (!(yield call(nativeConfirm, confirmParams))) {
+    return;
+  }
+
+  const evidenceId = yield select(transactionEvidenceSelector);
+
+  try {
+    // 3. 確認ボタンが押されたらメッセージをAPIに送信する
+    yield call([api, api.postTransactionmessage], { evidenceId, message });
+  } catch(e) {
+    // 4. APIにエラーが発生したらエラーメッセージを表示する
+    yield call(nativeAlert, e.message);
+    return;
+  }
+
+  // 5. 送信に成功したらメッセージのリストを更新する
+  yield call(fetchTransactionMessages, api, { evidenceId });
+}
+```
+
+---
+
+## Data Layer (Redux Store)
+
+- `Reducer`にロジックを書くことは可能
+- 絶対にロジックを持たせない強い意思が重要
+
+```js:
+function comment(state: string = "", action: ReduxAction<Comment>) {
+  switch (action.type) {
+    case INPUT_COMMENT:
+      return action.payload;
+    case CLEAR_COMMENT:
+      return "";
+    default:
+      return state;
+  }
+}
+```
+
+---
+
+- 以上がフロントエンドアプリケーションの見通しを良くする設計論
+- とはいえどこに何を書くべきか混乱することもある
 
 ---
 
@@ -175,24 +234,24 @@ Reduxはデータストアとして徹底する
 ```
 src
 ├── common
-│   └── components
+│   └── components → Common Presentation Layer (Damb Components)
 │       ├── Button.tsx
 │       ├── Panel.tsx
 │       └── Row.tsx
-└── transactions
+└── transactions → 取引方法ごとにディレクトリを分割
     ├── car
     ├── oogata
     └── rakuraku
         ├── Buyer.tsx
         ├── Seller.tsx
-        ├── components
+        ├── components → Specific Presentation Layer (Damb Components)
         │   ├── ProductDetail.tsx
         │   └── TransactionInfo.tsx
-        ├── containers
+        ├── containers → Presentation Layer (Smart Containers)
         │   ├── Done.tsx
         │   ├── WaitReview.tsx
         │   └── WaitShipping.tsx
         └── stores
-            ├── reducers.ts
-            └── sagas.ts
+            ├── reducers.ts → Data Layer
+            └── sagas.ts → Logic Layer
 ```
