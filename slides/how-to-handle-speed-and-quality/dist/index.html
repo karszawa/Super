@@ -1,0 +1,116 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="Content-type" content="text/html; charset=utf-8"><meta name="theme-color" content="#3498db"><meta name="viewport" content="width=device-width,initial-scale=1"><title>How ITP team works</title><meta property="og:title" content="How ITP team works"><meta property="og:type" content="article"><link href="vendor.6.83d21c9cc1a97f91d267.css" rel="stylesheet"><link href="main.3.0d7360fcf7c4aaf648a6.css" rel="stylesheet"></head><body><div id="root"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" class="btn-sidebar" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path></svg><article id="webslides"><section class="aligncenter title"><h1>メルカリITPチームが開発速度とソフトウェア品質を高めるためにやっていること</h1><p>Hiroaki KARASAWA 🐈 @karszawa</p><p>Mercari Engineer&#x27;s meetup for students vol.3 (2019/11/25)</p></section><section class="aligncenter"><h2>自己紹介</h2><ul><li>💁‍♂️ <span class="hs-8"></span> Hiroaki KARASAWA</li><li>🐦 <span class="hs-8"></span> @karszawa</li><li>💼 <span class="hs-8"></span> Mercari, <strong>Web Frontend Engineer</strong> (2019新卒)</li><li>💘 <span class="hs-8"></span> React, TypeScript, GraphQL, ReactNative(Expo)</li></ul></section><section class="aligncenter"><h2>学生時代</h2><ul><li>明石高専 ☞ 東京大学EEIC（編入）☞ 学士（工学）</li><li>メルカリ / LINE / クックパッド など5社でインターン</li><li>JPHacks などのハッカソンに参加</li><li>卒業研究で管理栄養士とアスリート向けのサービスを開発</li></ul></section><section class="aligncenter"><h2>仕事</h2><ul><li>2019年4月 株式会社メルカリに新卒入社</li><li>同6月 <strong>Logistics and Transaction Team</strong>のフロントエンドエンジニア</li></ul></section><section class="aligncenter"><h2>今日話すこと</h2><ol><li>自己紹介</li><li><strong>ITPチームについて</strong> ← イマココ</li><li>ITPのコードベース上での工夫</li><li>ITPの開発体制に関する工夫</li><li>まとめ</li></ol></section><section class="aligncenter"><h2>Web Frontend teams in Mercari</h2><img src="https://github.com/karszawa/bio/blob/how-to-handle-speed-and-stability/slides/how-to-handle-speed-and-quality/slides/img/web-teams-in-mercari.png?raw=true" style="height:80rem"></section><section class="aligncenter"><h2>WebアプリケーションとしてのITP</h2><ul><li><strong>React / Redux / Redux-Saga による SPA</strong></li><li>WebView上でのみ表示される特殊なアプリケーション<ul><li>開発はシミュレータではなくPCのブラウザで</li></ul></li></ul><span class="note">（最終確認はシミュレータだが、シミュレータは操作しにくくデバッグしにくいので使わない）</span></section><section class="aligncenter"><h2>ITPの主な機能</h2><ul><li>購入者と出品者がテキストで会話できる 🗣️</li><li>出品者が出品方法を選択して発送できる 📦</li><li>ヤマトや日本郵政のAPIとのやり取りが多い 🐈 💖 🧸</li></ul><img src="4212f8f499ac4c0bc3b962d38be36bed.webp" style="height:60rem"></section><section class="aligncenter"><h2>ITPチームの最近の活動</h2><ul><li>らくらくメルカリ便で「受け取り場所の変更」ができるようになった</li><li>ゆうゆうメルカリ便で「ゆうパケットプラス」が選択できるようになった</li></ul><img src="05ff99665b0ccb5a72ca81b53704dc33.webp"><span class="cite">ゆうパケットプラスの提供開始！そこで、何が「#ゆうパケットプラスに入った」のか をやってみた #メルカリな日々 | メルカン | https://mercan.mercari.com/articles/17554/</span></section><section class="aligncenter"><h1>今日のトピック</h1></section><section class="aligncenter"><h1>開発速度と品質を両立しながら開発を行うためにITPチームが何を行っているか</h1></section><section class="aligncenter"><h2>今日のまとめ</h2><ul><li>巨大なビジネスロジックの制御方法（何を作っているか）</li><li>スクラムの実践方法（どうやって作っているか）</li></ul></section><section class="aligncenter"><h2>ITPは単一のアプリケーションだが巨大で複雑なビジネスロジックを持っている</h2><p>ITP（取引画面）は次の条件で振る舞いを変える</p><ul><li><strong>購入者</strong> か <strong>出品者</strong></li><li><strong>取引状態</strong> (WaitShipping / WaitReview / Done, ...)</li><li><strong>発送方法</strong> (らくらくメルカリ便, ゆうゆうメルカリ便, 大型らくらくメルカリ便, ...)</li><li><strong>商品カテゴリ</strong> (あんしんスマホサポート, あんしん自動車保証, ...)</li></ul></section><section class="aligncenter"><h2>ITP（取引画面）の例</h2><p><img src="https://github.com/karszawa/bio/blob/how-to-handle-speed-and-stability/slides/how-to-handle-speed-and-quality/slides/img/transaction-pages.png?raw=true" alt="transaction-pages"></p></section><section class="aligncenter"><h2>ポイント 💡</h2><ul><li>ビジネスロジックは画面ごとに異なる</li><li>共有できるコンポーネントが多くある</li><li>☞ ビジネスロジックとUIがきれいに分割できるかどうかが重要</li></ul><span class="vs-16"></span><h2>ビジネスロジックとUIがきれいに分割できると</h2><span class="vs-16"></span><ul><li>再利用がしやすい （<strong>開発速度の向上</strong>）</li><li>テストしやすく変更にも強くなる （<strong>品質の向上</strong>）</li></ul></section><section class="aligncenter"><h2>具体的にはどうやって分ける？</h2><p>データ層・ロジック層・プレゼンテーション層などのレイヤーに分離</p></section><section class="aligncenter"><img src="641f04704756abd3ab594c493c6f0da0.webp"></section><section class="aligncenter"><h2>Presentation Layer (React)</h2><ul><li>マークアップやスタイリング</li><li>責務が明確なのでデザインシステムに移行しやすい（移行したとは言っていない）</li></ul><pre><code class="language-js:">const CommentBoxTypeOne: React.FC&lt;Props&gt; = ({
+  messages,
+  handleMessageChange,
+  handleSubmit,
+  shouldDisableSendButton,
+}) =&gt; (
+  &lt;div class=&quot;block&quot;&gt;
+    &lt;textarea
+      value={message}
+      onChange={handleMessageChange}
+    /&gt;
+    {!shouldDisableSendButton &amp;&amp; &lt;PrimaryButton onClick={handleSubmit} /&gt;}
+  &lt;/div&gt;
+);
+</code></pre></section><section class="aligncenter"><h2>Presentaion Layer (React-Redux)</h2><ul><li>コンポーネント・データを<strong>選択し紐付ける</strong></li></ul><pre><code class="language-js:">const CommentBox: React.FC&lt;Props&gt; = ({
+  shouldDisableSentButton,
+  messages,
+}) =&gt; {
+  if (someBranchingLogic) {
+    return &lt;CommentBoxTypeOne /&gt;;
+  }
+  return &lt;CommentBoxTypeTwo /&gt;;
+}
+
+const mapStateToProps = ({ transaction }: Store) =&gt; ({
+  // ...some display logic
+  shouldDisableSentButton,
+  messages: someCalculation(transaction.messages),
+});;
+
+const mapDispatchToProps = () =&gt; ({
+  handleMessageChange: updateMessage
+});
+
+export const SmartCommentBox = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(CommentBox);
+</code></pre></section><section class="aligncenter"><h2>Business Logic Layer (Redux-Saga)</h2><ul><li><strong>振る舞い</strong>を定義する層</li></ul><pre><code>例: メッセージを送信するときのビジネスロジック
+
+1. コメントボックスに入力されたメッセージを取り出す
+2. 本当に送信するかの確認のためにダイアログを表示する
+3. 確認ボタンが押されたらメッセージをAPIに送信する
+4. APIにエラーが発生したらエラーメッセージを表示する
+5. 送信に成功したらメッセージのリストを更新する
+</code></pre></section><section class="aligncenter"><h2>Business Logic layer (Redux-Saga)</h2><ul><li>Sagaを起動</li></ul><pre><code class="language-js">function createRootSaga(api: APIClient) {
+  return function *rootSaga() {
+    yield fork(function*() {
+      while(true) {
+        const action = yield take(POST_CHAT_MESSAGE);
+        yield call(postMessageSaga, apiClient, action);
+      }
+    });
+  }
+}
+</code></pre></section><section class="aligncenter"><h2>Business Logic layer (Redux-Saga)</h2><ul><li>Saga本体</li></ul><pre><code class="language-js">export function* postMessageSaga(api: APIClient, action: ReduxAction&lt;{ message: string }&gt;) {
+  // 1. コメントボックスに入力されたメッセージを取り出す
+  const { message } = action.payload;
+
+  // 2. 本当に送信するかの確認のためにダイアログを表示する
+  const confirmParams: ConfirmParams = {
+    message: &quot;本当にメッセージを送信しますか？&quot;,
+    confirmText: &quot;はい&quot;,
+    dismissText: &quot;いいえ&quot;
+  };
+  if (!(yield call(nativeConfirm, confirmParams))) {
+    return;
+  }
+
+  const evidenceId = yield select(transactionEvidenceSelector);
+
+  try {
+    // 3. 確認ボタンが押されたらメッセージをAPIに送信する
+    yield call([api, api.postTransactionmessage], { evidenceId, message });
+  } catch(e) {
+    // 4. APIにエラーが発生したらエラーメッセージを表示する
+    yield call(nativeAlert, e.message);
+    return;
+  }
+
+  // 5. 送信に成功したらメッセージのリストを更新する
+  yield call(fetchTransactionMessages, api, { evidenceId });
+}
+</code></pre></section><section class="aligncenter"><h2>Data Layer (Redux Store)</h2><ul><li><code>Reducer</code>にロジックを書くことは可能</li><li>絶対にロジックを持たせない強い意思が重要</li></ul><pre><code class="language-js:">function comment(state: string = &quot;&quot;, action: ReduxAction&lt;Comment&gt;) {
+  switch (action.type) {
+    case INPUT_COMMENT:
+      return action.payload;
+    case CLEAR_COMMENT:
+      return &quot;&quot;;
+    default:
+      return state;
+  }
+}
+</code></pre></section><section class="aligncenter"><ul><li>以上がフロントエンドアプリケーションの見通しを良くする設計論</li><li>とはいえどこに何を書くべきか混乱することもある</li></ul></section><section class="aligncenter"><h2>ディレクトリベースでレイヤを分割して分割の間違いが起こりにくいようにしている</h2><pre><code>src
+├── common
+│   └── components → Common Presentation Layer (Damb Components)
+│       ├── Button.tsx
+│       ├── Panel.tsx
+│       └── Row.tsx
+└── transactions → 取引方法ごとにディレクトリを分割
+    ├── car
+    ├── oogata
+    └── rakuraku
+        ├── Buyer.tsx
+        ├── Seller.tsx
+        ├── components → Specific Presentation Layer (Damb Components)
+        │   ├── ProductDetail.tsx
+        │   └── TransactionInfo.tsx
+        ├── containers → Presentation Layer (Smart Containers)
+        │   ├── Done.tsx
+        │   ├── WaitReview.tsx
+        │   └── WaitShipping.tsx
+        └── stores
+            ├── reducers.ts → Data Layer
+            └── sagas.ts → Logic Layer
+</code></pre></section><section class="aligncenter"><ul><li>取引画面ごとのコンポーネントなどドメイン知識も結構必要</li><li>知識の共有には組織体制としての工夫も必要</li></ul></section><section class="aligncenter"><ol><li>自己紹介</li><li>ITPチームについて</li><li>ITPのコードベース上での工夫</li><li><strong>ITPの開発体制に関する工夫</strong> ← 次ここ</li><li>まとめ</li></ol></section><section class="aligncenter"><h2>What is <strong>SCRUM</strong></h2><p>持続可能なチームを作るための組織開発方法のフレームワーク</p></section><section class="aligncenter"><h2>スクラムセレモニー（会議）</h2><p>1スプリント（2週間）に一度</p><ul><li>Sprint Review (成果物の共有)</li><li>Sprint Retrospective (全般的な振り返り)</li><li>Product Backlog Refinement (タスクの確認・選択)</li><li>Sprint Planning (スプリントで実行するタスクの選択)</li></ul><p>毎日</p><ul><li>Standup (タスクの確認)</li></ul></section><section class="aligncenter"><h2>スクラムの長所・短所</h2><p>長所</p><ul><li>個人に依存しない<ul><li>チームへのアサインがあるのみで個人へのアサインがない</li><li>(Daily standupで毎日担当を変更することも可能)</li></ul></li></ul><p>短所</p><ul><li>仕様の共有のための会議に時間を使う（業務時間の10%ほど）</li></ul></section><section class="aligncenter"><h2>個人に依存しないことの利点</h2><ul><li>全員がほぼ完全なドメイン知識を持っている<ul><li>「OOはXXが詳しいから彼が担当」ということが起きない</li></ul></li><li>レビューのクオリティが高くなる<ul><li>ソフトウェアデザイン的な視点だけでなくビジネス的な視点からも仕様をきちんと把握した上で高度なレビューができる</li></ul></li><li>モブプログラミングを実施できる<ul><li>コンテキストが共有されているので</li></ul></li><li>業務量の平準化<ul><li>休みやすい → 有給もSick Leaveも</li></ul></li></ul></section><section class="aligncenter"><h1>ITPチームでのスクラム</h1></section><section class="aligncenter"><h2>Sprint Review (30min)</h2><ul><li>ユーザーストーリーに沿って機能のデモを行う</li><li>ユーザーの視点からステークホルダーからレビューをもらう</li><li>特に問題なければリリースできる</li></ul><img src="5706c29bf699e3f299048b9a1fdb2a03.webp" style="height:40rem"></section><section class="aligncenter"><h2>Sprint Retrospective (30min)</h2><ul><li>そのスプリントでの行動をKPT(Keep/Problem/Try)で分類</li><li>開発の効率・品質を上げるために何ができるかを考えて次回のスプリントに活かす</li></ul></section><section class="aligncenter"><h2>Product Backlog Refinement (30min)</h2><ul><li>チケットの内容を精査し、内容が不十分であれば明確にする</li><li>メンバーがチケットの内容を理解しているか確認<ul><li>全員が機能を理解するまでとことんやる</li></ul></li></ul></section><section class="aligncenter"><h2>Sprint Planning (1h)</h2><ul><li>タスクを<strong>S・M・L</strong>でざっくり推定<ul><li><span class="note">正確な推定は不可能なのでやるだけ無駄</span></li></ul></li><li>推定が難しい調査系のタスクは<strong>「2人で1日」</strong>等の人月型タイムボックスで実施<ul><li>その期間で終わらなければ、他のタスクとの優先度を再度調整<ul><li><span class="note">優先度が下がって次のスプリントになることも</span></li></ul></li></ul></li></ul></section><section class="aligncenter"><h2>Daily standup (10min)</h2><p>進捗状況の確認のために次の3つを各人がチームメンバーに説明</p><ul><li><strong>昨日やったこと</strong></li><li><strong>今日やること</strong></li><li><strong>ブロッカー</strong></li></ul></section><section class="aligncenter"><h2>スプリントの実施</h2><ul><li>Sprint Planningで定義したタスクリストを優先度順に処理していく</li><li>特定の誰かが決まったアサインであることは少なく、Daily standupでその日の担当を決めるだけ</li></ul></section><section class="aligncenter"><h2>スクラムコーチ</h2><ul><li>今年に入ってからメルカリは全社的にスクラムの実施を開始した</li><li>外部の会社からスクラムコーチを招待して指導を受けている</li></ul></section><section class="aligncenter"><h2>Scrum so far</h2><ul><li>ITPチームではスクラムを開始して半年ほど</li><li>開始直後はメンバー間でドメイン知識が共有されておらず、知識共有に時間がかかることも</li><li>最近はメンバー間で知識が平準化されてきたので効率が上がってきた 😎</li></ul></section><section class="aligncenter"><h2>スクラムまとめ</h2><ul><li>チームメンバーの変動に強い<ul><li>メンバーの参加・離脱の両方で</li></ul></li><li>個人としての生産性よりもチームとしての生産性を重視する<ul><li>会社としての成果が出やすい</li></ul></li></ul></section><section class="aligncenter"><h2>まとめ | 話したこと</h2><ul><li>コードベース上の工夫</li><li>組織体制上の工夫（スクラム）</li></ul></section><section class="aligncenter"><h2>まとめ | 話してないこと</h2><ul><li>Re-architecture プロジェクト（古いページから新しいページにマイグレートする方法）</li><li>レイヤごとに選択したテストツール（Jest,Enzyme,Storybook,Storyshots,Cypress）</li><li>Redux-Sagaのテストが書きやすいという話ともっと書きやすくするための工夫</li><li><strong>コードオーナー</strong>による品質の保証とメンバーの教育</li><li>QAとの協力的E2Eテスト</li><li>WebViewの<strong>デザインシステム</strong>が難しいという話</li><li>最近筋トレを始めた話</li><li>開発時におけるバックエンドへの依存を減らすための<strong>モックサーバー</strong></li><li>最近そのモックサーバーをon-browserにしようとしている話</li><li>WebView特有のクライアント<strong>ネイティブAPIのモッキング</strong></li><li>Design Doc / UI Design / PJDoc のどこに何を書くか悩んでいる話</li><li>なぜ新卒としてメルカリに入社したか</li><li>Develop as OSSな話</li><li>Engineering ManagerとTech LeadとDeveloperの役割</li></ul></section></article></div><script type="text/javascript" src="runtime.0f9bbfcb565b8cf9b80f.bundle.js"></script><script type="text/javascript" src="vendor.6.83d21c9cc1a97f91d267.bundle.js"></script><script type="text/javascript" src="main.3.0d7360fcf7c4aaf648a6.bundle.js"></script></body></html>
