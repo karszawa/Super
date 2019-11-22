@@ -1,4 +1,4 @@
-# Mocking Strategy in ITP
+# How to handle speed and quolity in ITP team
 
 date: Nov 25, 2019.  
 place: Mercari Engineer's meetup for students
